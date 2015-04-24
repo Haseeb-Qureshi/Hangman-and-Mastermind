@@ -1,14 +1,14 @@
 class Game
 
   def initialize
-    @correct_code = Code.new.randomize
+    @correct_code = Code.random
     @turns_passed = 0
     @won = false
   end
 
   def play
     until @won || @turns_passed == 8
-      input_code = Code.new.parse(get_input)
+      input_code = Code.parse(get_input)
       process(input_code)
     end
 
@@ -50,22 +50,17 @@ class Game
 end
 
 class Code
-  attr_reader :pegs
   COLORS = %w[r g b y o p].map(&:to_sym)
 
-  def initialize
-    @pegs = []
+  def self.random
+    pegs = []
+    4.times { pegs << COLORS.sample }
+    new(pegs)
   end
 
-  def randomize
-    @pegs = []
-    4.times { @pegs << COLORS.sample }
-    self
-  end
-
-  def parse(input)
-    @pegs = input.chars.map(&:downcase).map(&:to_sym)
-    self
+  def self.parse(input)
+    pegs = input.chars.map(&:downcase).map(&:to_sym)
+    new(pegs)
   end
 
   def is_valid?
@@ -84,6 +79,16 @@ class Code
       count += 1 if @pegs.include?(guess.pegs[i]) && @pegs[i] != guess.pegs[i]
     end
     count
+  end
+
+  protected
+
+  attr_reader :pegs
+
+  private
+
+  def initialize(pegs = [])
+    @pegs = pegs
   end
 
 end
