@@ -12,7 +12,7 @@ class Computer < Player
   end
 
   # is master
-  
+
   def display_word
     "was #{@word}"
   end
@@ -61,7 +61,7 @@ class Computer < Player
   def update(indices)
     indices.each { |index| @guess_array[index-1] = @last_guess }
   end
-  
+
   def guesser_word
     render_word = ""
     @guess_array.each_with_index do |char, idx|
